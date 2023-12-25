@@ -153,7 +153,7 @@
             </div>
 
             <div class="mb-10">
-                <a href="{{ route('dashboard.movie.detail.create', $movie->id) }}"
+                <a href="{{ route('dashboard.movie.item.create', $movie->id) }}"
                     class="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-lg">
                     + Add Video
                 </a>

@@ -24,7 +24,7 @@
                         </div>
                     </div>
                 @endif
-                <form class="w-full" action="{{ route('dashboard.movie.detail.store', $movie->id) }}" method="post"
+                <form class="w-full" action="{{ route('dashboard.movie.item.store', $movie->id) }}" method="post"
                     enctype="multipart/form-data">
                     @csrf
                     <div class="flex flex-wrap -mx-3 mb-6">

@@ -27,7 +27,7 @@ class SingerDetailController extends Controller
                 ->addColumn('action', function ($item) {
                     return '
 
-                    <form class="inline-block" action="' . route('dashboard.singer.destroy', $item->id) . '" method="POST">
+                    <form class="inline-block" action="' . route('dashboard.music.destroy', $item->id) . '" method="POST">
                 <button class="border border-red-500 bg-red-500 text-white rounded-md px-2 py-1 m-2 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline" >
                     Hapus
                 </button>
@@ -65,6 +65,7 @@ class SingerDetailController extends Controller
     public function store(MusicRequest $request)
     {
         $singer = Singer::where('id', $request->singers_id)->first();
+        $audio = new Mp3Info($request->file('music'));
 
         $pathPoster = $request->file('poster')->store("public/music");
         $pathPosterForDatabase = str_replace('public', 'storage', $pathPoster);
@@ -72,7 +73,6 @@ class SingerDetailController extends Controller
         $pathMusicForDatabase = str_replace('public', 'storage', $pathMusic);
 
 
-        $audio = new Mp3Info($request->file('music'));
         // dd($audio->duration);
 
         Music::create([

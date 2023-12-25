@@ -109,6 +109,6 @@ class MusicController extends Controller
     public function destroy(Music $music)
     {
         $music->delete();
-        return redirect()->route('dashboard.music.index');
+        return redirect()->route('dashboard.singer.detail.index', $music->singers_id);
     }
 }

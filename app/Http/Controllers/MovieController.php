@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\MovieRequest;
 use App\Models\Movie;
 use App\Models\MovieGenre;
+use App\Models\MovieItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Yajra\DataTables\Facades\DataTables;
@@ -24,7 +25,7 @@ class MovieController extends Controller
                 ->addColumn('action', function ($item) {
                     return '
                     <a class="inline-block border border-blue-500 bg-blue-500 text-white rounded-md px-2 py-1 m-1 transition duration-500 ease select-none hover:bg-blue-800 focus:outline-none focus:shadow-outline"
-                    href="' . route('dashboard.movie.detail.index', $item->id) . '">
+                    href="' . route('dashboard.movie.show', $item->id) . '">
                     Detail
                     </a>
                     <form class="inline-block" action="' . route('dashboard.movie.destroy', $item->id) . '" method="POST">
@@ -78,9 +79,39 @@ class MovieController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Movie $movie)
     {
-        //
+        $item = MovieItem::where('movies_id', $movie->id)->first();
+
+        if (request()->ajax()) {
+            $query = MovieItem::where('movies_id', $movie->id);
+            // dd($query);
+
+            return DataTables::of($query)
+                ->addColumn('action', function ($item) {
+                    return '
+                    <a class="inline-block border border-indigo-500 bg-indigo-500 text-white rounded-md px-2 py-1 m-1 transition duration-500 ease select-none hover:bg-blue-800 focus:outline-none focus:shadow-outline"
+                    href="' . url($item->url) . '">
+                    Open Video
+                    </a>
+                    <form class="inline-block" action="' . route('dashboard.item.destroy', $item->id) . '" method="POST">
+                    <button class="border border-red-500 bg-red-500 text-white rounded-md px-2 py-1 m-2 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline" >
+                        Hapus
+                    </button>
+                        ' . method_field('delete') . csrf_field() . '
+                    </form>';
+                })
+                ->editColumn('thumbnail', function ($item) {
+                    return '<img width="320" height="240"><source src="' . url($item->thumbnail) . '"></img>';
+                })
+                ->editColumn('duration', function ($item) {
+                    return '' . $item->duration . ' menit';
+                })
+                ->rawColumns(['action', 'thumbnail'])
+                ->make();
+        }
+
+        return view('pages.dashboard.movie.show', compact('movie', 'item'));
     }
 
     /**
@@ -132,7 +163,7 @@ class MovieController extends Controller
             ]);
         }
 
-        return redirect()->route('dashboard.movie.detail.index', $movie->id);
+        return redirect()->route('dashboard.movie.show', $movie->id);
     }
 
 

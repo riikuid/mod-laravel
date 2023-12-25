@@ -15,34 +15,6 @@ class MovieItemController extends Controller
      */
     public function index(Movie $movie)
     {
-        if (request()->ajax()) {
-            $query = MovieItem::where('movies_id', $movie->id);
-            // dd($query);
-
-            return DataTables::of($query)
-                ->addColumn('action', function ($item) {
-                    return '
-                    <form class="inline-block" action="' . route('dashboard.detail.destroy', $item->id) . '" method="POST">
-                    <button class="border border-red-500 bg-red-500 text-white rounded-md px-2 py-1 m-2 transition duration-500 ease select-none hover:bg-red-600 focus:outline-none focus:shadow-outline" >
-                        Hapus
-                    </button>
-                        ' . method_field('delete') . csrf_field() . '
-                    </form>';
-                })
-                ->editColumn('url', function ($item) {
-                    return '<video width="320" height="240" controls><source src="' . $item->url . '" type="video/mp4"></video>';
-                })
-                ->editColumn('thumbnail', function ($item) {
-                    return '<img width="320" height="240"><source src="' . $item->thumbnail . '"></img>';
-                })
-                ->editColumn('duration', function ($item) {
-                    return '' . $item->duration . ' menit';
-                })
-                ->rawColumns(['action', 'url', 'thumbnail'])
-                ->make();
-        }
-
-        return view('pages.dashboard.detail-movie.index', compact('movie'));
     }
 
     /**
@@ -75,7 +47,7 @@ class MovieItemController extends Controller
             ]);
         }
 
-        return redirect()->route('dashboard.movie.detail.index', $movie->id);
+        return redirect()->route('dashboard.movie.show', $movie->id);
     }
 
     /**
@@ -108,6 +80,6 @@ class MovieItemController extends Controller
     public function destroy(MovieItem $item)
     {
         $item->delete();
-        return redirect()->route('dashboard.movie.detail.index');
+        return redirect()->route('dashboard.movie.show', $item->movies_id);
     }
 }

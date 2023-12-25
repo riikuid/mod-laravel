@@ -27,8 +27,8 @@
                         'dashboard.movie.index',
                         'dashboard.movie.create',
                         'dashboard.movie.edit',
-                        'dashboard.movie.detail.index',
-                        'dashboard.movie.detail.create',
+                        'dashboard.movie.item.index',
+                        'dashboard.movie.item.create',
                     ])">
                         {{ __('Movie') }}
                     </x-nav-link>

@@ -35,17 +35,20 @@ Route::group(['middleware' => ['auth:sanctum', 'verified']], function () {
     Route::name('dashboard.')->prefix('dashboard')->group(function () {
         Route::get('/', [DashboardController::class, 'index'])->name('index');
         Route::resource('genre', MovieGenreController::class);
-        Route::resource('movie', MovieController::class);
         Route::resource('article', ArticleController::class);
-        Route::resource('movie.detail', MovieItemController::class)->shallow()->only([
+        Route::resource('movie', MovieController::class);
+        Route::resource('movie.item', MovieItemController::class)->shallow()->only([
             'index', 'create', 'store', 'destroy'
-        ]);;
+        ]);
+
         Route::resource('car-status', CarStatusController::class)->shallow()->only([
             'index', 'edit', 'update'
         ]);
         Route::resource('singer', SingerController::class);
         Route::resource('music', MusicController::class);
-        Route::resource('singer.detail', SingerDetailController::class);
+        Route::resource('singer.detail', SingerDetailController::class)->shallow()->only([
+            'index', 'create', 'store', 'edit', 'update', 'destroy'
+        ]);;
         // Route::post('artist.destroy-music', MusicArtistController::class, 'destroyMusic');
     });
 });
