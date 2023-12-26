@@ -83,15 +83,15 @@
                                     href="javascript:void(0);">
                                     Change Photo
                                 </a>
-                                <a class=" inline-block border font-medium text-sm border-blue-500 bg-blue-500 text-white rounded-s-sm px-2 py-1 m-1 transition duration-500 ease select-none hover:bg-blue-700 hover:border-blue-700 focus:outline-none focus:shadow-outline change-poster-button"
-                                    href="{{ route('dashboard.singer.edit', $singer->id) }}">
+                                <a class=" inline-block border font-medium text-sm border-blue-500 bg-blue-500 text-white rounded-s-sm px-2 py-1 m-1 transition duration-500 ease select-none hover:bg-blue-700 hover:border-blue-700 focus:outline-none focus:shadow-outline change-data-button"
+                                    href="javascript:void(0);">
                                     Edit Data
                                 </a>
                             </div>
                             <div id="myModal" style="display:none"
                                 class="modal fixed bg-gray-900 bg-opacity-50 inset-0 flex items-center justify-center z-50">
                                 <div class="modal-content bg-white p-8 rounded shadow-md">
-                                    <h2 class="text-2xl mb-4 font-bold">Change Poster</h2>
+                                    <h2 class="text-2xl mb-4 font-bold">Change Photo Profile</h2>
                                     <form id="posterForm" action="{{ route('dashboard.singer.update', $singer->id) }}"
                                         method="POST" enctype="multipart/form-data">
                                         @csrf
@@ -107,6 +107,34 @@
                                                 onclick="validateForm()">Submit</button>
                                             <button type="button" onclick="closeModal()"
                                                 class="px-4 py-2 bg-gray-400 text-white font-semibold ml-4 rounded hover:bg-gray-600">Cancel</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <div id="dataModal" style="display:none"
+                                class="modal fixed max-w-full bg-gray-900 bg-opacity-50 inset-0 flex items-center justify-center z-50">
+                                <div class="modal-content bg-white p-8 rounded shadow-md">
+                                    <h2 class="text-2xl mb-4 font-bold">Edit Data Singer</h2>
+                                    <form id="posterForm" action="{{ route('dashboard.singer.update', $singer->id) }}"
+                                        method="POST" enctype="multipart/form-data">
+                                        @csrf
+                                        @method('put')
+                                        <!-- Input field for image file -->
+                                        <input value="{{ old('name') ?? $singer->name }}" name="name"
+                                            class="appearance-none block max-w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                            id="grid-last-name" type="text" placeholder="Name">
+                                        <!-- Tombol submit dan cancel -->
+                                        <div class="flex justify-end flex-wrap -mx-3 mt-3">
+                                            <div class="w-full px-3 text-right">
+                                                <button type="submit"
+                                                    class=" shadow-lg bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded">
+                                                    Update Singer
+                                                </button>
+                                                <button type="button" onclick="closeModal()"
+                                                    class=" shadow-lg bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">
+                                                    Cancel
+                                                </button>
+                                            </div>
                                         </div>
                                     </form>
                                 </div>
@@ -128,18 +156,24 @@
 
                                 // Mendapatkan modal element
                                 var modal = document.getElementById('myModal');
+                                var modalData = document.getElementById('dataModal');
 
                                 // Mendapatkan tombol Change Poster element
-                                var btn = document.querySelector('.change-poster-button');
+                                var btnPhoto = document.querySelector('.change-poster-button');
+                                var btnData = document.querySelector('.change-data-button');
 
-                                // Ketika tombol Change Poster diklik, tampilkan modal
-                                btn.addEventListener('click', function() {
+                                // Ketika tombol Change diklik, tampilkan modal
+                                btnPhoto.addEventListener('click', function() {
                                     modal.style.display = '';
+                                });
+                                btnData.addEventListener('click', function() {
+                                    modalData.style.display = '';
                                 });
 
                                 // Fungsi untuk menutup modal
                                 function closeModal() {
                                     modal.style.display = 'none';
+                                    modalData.style.display = 'none';
                                 }
                             </script>
                         </div>

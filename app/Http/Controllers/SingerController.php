@@ -7,6 +7,7 @@ use App\Models\Music;
 use App\Models\Singer;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 
 class SingerController extends Controller
@@ -94,9 +95,34 @@ class SingerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, Singer $singer)
     {
-        //
+        if ($request->hasFile('file')) {
+            $path = $request->file('file')->store('public/music');
+            $pathForDatabase = str_replace('public', 'storage', $path);
+
+            $singer->update([
+                'name' => $singer->name,
+                'url_profile' => $pathForDatabase,
+            ]);
+        } else {
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string|max:255',
+            ]);
+
+            if ($validator->fails()) {
+                return redirect()->back()
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+
+            $singer->update([
+                'name' => $request->name,
+                'url_profile' => $singer->url_profile,
+            ]);
+        }
+
+        return redirect()->route('dashboard.singer.detail.index', $singer->id);
     }
 
     /**
