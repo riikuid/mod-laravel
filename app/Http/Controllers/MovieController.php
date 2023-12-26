@@ -102,7 +102,7 @@ class MovieController extends Controller
                     </form>';
                 })
                 ->editColumn('thumbnail', function ($item) {
-                    return '<img width="320" height="240"><source src="' . url($item->thumbnail) . '"></img>';
+                    return '<img style="width: 200px; height: 112.5px; object-fit:cover;" src="' . url($item->thumbnail) . '"/>';
                 })
                 ->editColumn('duration', function ($item) {
                     return '' . $item->duration . ' menit';

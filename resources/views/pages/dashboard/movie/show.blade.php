@@ -159,6 +159,12 @@
                         + Add Video
                     </a>
                 </div>
+            @else
+                <div class="mb-10">
+                    <a class="bg-gray-500 hover:bg-gray-500 text-white font-bold py-2 px-4 rounded shadow-lg">
+                        + Add Video
+                    </a>
+                </div>
             @endif
             <div class="shadow overflow-hidden sm:rounded-md">
                 <div class="px-4 py-5 bg-white sm:p-6">
