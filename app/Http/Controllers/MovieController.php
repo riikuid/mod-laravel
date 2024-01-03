@@ -62,7 +62,7 @@ class MovieController extends Controller
      */
     public function store(MovieRequest $request)
     {
-        $path = $request->file('files')->store('public/movie/cover');
+        $path = $request->file('files')->store('public/movie');
         $pathForDatabase = str_replace('public', 'storage', $path);
 
         Movie::create([
@@ -131,14 +131,15 @@ class MovieController extends Controller
     public function update(Request $request, Movie $movie)
     {
         if ($request->hasFile('file')) {
-            $path = $request->file('file')->store('public/movie/cover');
+            $path = $request->file('file')->store('public/movie');
+            $pathForDatabase = str_replace('public', 'storage', $path);
 
             $movie->update([
                 'title' => $movie->title,
                 'description' => $movie->description,
                 'genres_id' => $movie->genres_id,
                 'release_year' => $movie->release_year,
-                'url_poster' => $path,
+                'url_poster' => $pathForDatabase,
             ]);
         } else {
             $validator = Validator::make($request->all(), [

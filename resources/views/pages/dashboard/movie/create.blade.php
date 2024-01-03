@@ -52,7 +52,6 @@
                                     <option value="{{ $genre->id }}">{{ $genre->name }}</option>
                                 @endforeach
                             </select>
-
                         </div>
                     </div>
 

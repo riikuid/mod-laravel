@@ -37,13 +37,14 @@ class ArticleController extends Controller
                     $itemDescription = $item->description;
                     $words = explode(" ", $itemDescription); // Pecah teks menjadi array kata
 
-                    if (count($words) > 100) {
-                        $shortDescription = implode(" ", array_slice($words, 0, 100));
+                    if (count($words) > 50) {
+                        $shortDescription = implode(" ", array_slice($words, 0, 50));
+                        return  "$shortDescription...";
                     } else {
                         // Jika ada 100 kata atau kurang, gunakan seluruh teks
                         $shortDescription = $itemDescription;
+                        return  $shortDescription;
                     }
-                    return $shortDescription;
                 })
                 ->editColumn('thumbnail', function ($item) {
                     return '<img style="max-width: 150px;" src="' . url($item->thumbnail) . '"/>';
@@ -101,29 +102,33 @@ class ArticleController extends Controller
      */
     public function update(Request $request, Article $article)
     {
+
+        $validator = Validator::make($request->all(), [
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+        ]);
+
+        if ($validator->fails()) {
+            return redirect()->back()
+                ->withErrors($validator)
+                ->withInput();
+        }
+
         if ($request->hasFile('file')) {
             $path = $request->file('file')->store('public/article');
-
-            $article->update([
-                'title' => $article->title,
-                'description' => $article->description,
-                'thumbnail' => $path,
-            ]);
-        } else {
-            $validator = Validator::make($request->all(), [
-                'title' => 'required|string|max:255',
-                'description' => 'required|string',
-            ]);
-
-            if ($validator->fails()) {
-                return redirect()->back()
-                    ->withErrors($validator)
-                    ->withInput();
-            }
+            $pathForDatabase = str_replace('public', 'storage', $path);
 
             $article->update([
                 'title' => $request->title,
                 'description' => $request->description,
+                'thumbnail' => $pathForDatabase,
+            ]);
+        } else {
+
+            $article->update([
+                'title' => $request->title,
+                'description' => $request->description,
+                'thumbnail' => $article->thumbnail,
             ]);
         }
 

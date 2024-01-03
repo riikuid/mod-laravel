@@ -46,7 +46,7 @@
                                 Genre
                             </label>
                             <select name="genres_id"
-                                class="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                                class="select-dd appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                                 id="grid-last-name">
                                 @foreach ($genres as $genre)
                                     <option value="{{ $genre->id }}"
@@ -100,4 +100,11 @@
             </div>
         </div>
     </div>
+    <script>
+        jQuery(document).ready(function() {
+            jQuery('.select-dd').select2(
+
+            );
+        });
+    </script>
 </x-app-layout>

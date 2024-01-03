@@ -23,7 +23,8 @@
                     },
                     {
                         data: 'title',
-                        name: 'title'
+                        name: 'title',
+                        width: '20%'
                     },
                     {
                         data: 'description',
